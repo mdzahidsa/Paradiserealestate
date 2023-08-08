@@ -2,7 +2,7 @@ from django.shortcuts import render,redirect
 from django.http import HttpResponse
 from .forms import UserForm
 from .models import User,UserProfile
-from django.contrib import messages
+from django.contrib import messages,auth
 from owner.forms import OwnerForm
 # Create your views here.
 def registerUser(request):
@@ -51,6 +51,30 @@ def registerOwner(request):
     context = {
         'form' : form,
         'o_form':o_form,
-
     }
     return render(request,'accounts/registerOwner.html', context)
+
+def login(request):
+    if request.method == 'POST':
+        email = request.POST['email']
+        password = request.POST['password']
+
+        user = auth.authenticate(email=email, password=password)
+
+        if user is not None:
+            auth.login(request, user)
+            messages.success(request,"You are now logged in")
+            return redirect('dashboard')
+        else:
+            messages.error(request,"Invalid login credentials.Please try again.")
+            return redirect('login')
+    return render(request,'accounts/login.html')
+
+def logout(request):
+    auth.logout(request)
+    messages.info(request,'You are now logged out.')
+    return redirect('login')
+
+def dashboard(request):
+    return render(request,'accounts/dashboard.html')
+
