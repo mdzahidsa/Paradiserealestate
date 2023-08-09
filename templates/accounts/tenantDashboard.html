@@ -1,0 +1,15 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+
+<!--{% if user.role == 1 %}
+<h4>Welcome {{user.username}},You are a owner.</h4>
+{% else %}
+<h4>Welcome {{user.username}} ,You are a tenant.</h4>
+{% endif %}-->
+<h4>Welcome {{user.username}},</h4>
+<p>You are a {{user.get_role}}.</p>
+
+{% include 'includes/alerts.html' %}
+{% endblock %}
