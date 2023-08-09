@@ -4,7 +4,7 @@ from .forms import UserForm
 from .models import User,UserProfile
 from django.contrib import messages,auth
 from owner.forms import OwnerForm
-from .utils import detectUser
+from .utils import detectUser,send_verification_email
 from django.core.exceptions import PermissionDenied
 from django.contrib.auth.decorators import login_required,user_passes_test
 # Create your views here.
@@ -25,7 +25,7 @@ def check_role_tenant(user):
 def registerUser(request):
     if request.user.is_authenticated:
         messages.warning(request,'You are already logged in!.')
-        return redirect('dashboard')
+        return redirect('tenantDashboard')
     elif request.method == 'POST':
         form = UserForm(request.POST)
         if form.is_valid():
@@ -34,6 +34,9 @@ def registerUser(request):
             user.set_password(password)
             user.role = User.TENANT
             form.save()
+            #verification/activate User email
+
+            send_verification_email(request, user)
             messages.success(request,"Your account has been registered successfully.")
             return redirect('registerUser')
         else:
@@ -48,7 +51,7 @@ def registerUser(request):
 def registerOwner(request):
     if request.user.is_authenticated:
         messages.warning(request,'You are already logged in!.')
-        return redirect('dashboard')
+        return redirect('ownerDashboard')
     elif request.method =='POST':
         form = UserForm(request.POST)
         o_form = OwnerForm(request.POST, request.FILES)
@@ -63,6 +66,8 @@ def registerOwner(request):
             user_profile = UserProfile.objects.get(user=user)
             owner.user_profile = user_profile
             owner.save()
+            send_verification_email(request, user)
+
             messages.success(request,"Your account has been registered successfully.Please wait for approval")
             return redirect('registerOwner')
         else:
@@ -76,6 +81,10 @@ def registerOwner(request):
         'o_form':o_form,
     }
     return render(request,'accounts/registerOwner.html', context)
+
+def activate(request,uidb64,token):
+    #Set is_active status to true
+    return
 
 def login(request):
     if request.user.is_authenticated:

@@ -9,5 +9,5 @@ urlpatterns = [
     path('myAccount/',views.myAccount,name='myAccount'),
     path('ownerDashboard/',views.ownerDashboard,name='ownerDashboard'),
     path('tenantDashboard/',views.tenantDashboard,name='tenantDashboard'),
-
+    path('activate/<uidb64>/<token>/',views.activate, name='activate'),
 ]
