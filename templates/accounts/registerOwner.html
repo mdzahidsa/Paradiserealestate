@@ -121,5 +121,20 @@
             </div>
         </div>
     </div>
-</div>
+</div>  
+<script>
+    const firstNameInput = document.getElementById("{{ form.first_name.id_for_label }}");
+    const lastNameInput = document.getElementById("{{ form.last_name.id_for_label }}");
+    const ownerFullNameOutput = document.getElementById("{{ o_form.owner_fullname.id_for_label }}");
+    
+    firstNameInput.addEventListener("input", updateFullName);
+    lastNameInput.addEventListener("input", updateFullName);
+    
+    function updateFullName() {
+        const firstName = firstNameInput.value;
+        const lastName = lastNameInput.value;
+        const fullName = `${firstName} ${lastName}`;
+        ownerFullNameOutput.value = fullName;
+    }
+</script>
 {% endblock %}

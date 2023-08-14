@@ -4,6 +4,7 @@ from .forms import UserForm
 from .models import User,UserProfile
 from django.contrib import messages,auth
 from owner.forms import OwnerForm
+from owner.models import Owner
 from django.contrib.auth.tokens import default_token_generator
 from .utils import detectUser,send_verification_email
 from django.core.exceptions import PermissionDenied
