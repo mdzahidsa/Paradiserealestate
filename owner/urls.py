@@ -12,5 +12,7 @@ urlpatterns = [
     path('create-listings/category/add/', views.add_category, name='add_category'),
     path('create-listings/category/edit/<int:pk>/', views.edit_category, name='edit_category'),
     path('create-listings/category/delete/<int:pk>/', views.delete_category, name='delete_category'),
+    path('create-listings/listings/add/', views.add_listings, name='add_listings'),
+
 
 ]

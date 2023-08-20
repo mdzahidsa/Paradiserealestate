@@ -7,7 +7,7 @@ from .models import Owner
 from django.contrib.auth.decorators import login_required,user_passes_test
 from accounts.views import check_role_owner
 from listings.models import Category,Listings
-from listings.forms import CategoryForm
+from listings.forms import CategoryForm,ListingForm
 from django.template.defaultfilters import slugify
 def get_owner(request):
     owner = Owner.objects.get(user=request.user)
@@ -113,3 +113,24 @@ def delete_category(request, pk=None):
     category.delete()
     messages.success(request, 'Category has been deleted successfully.')
     return redirect('create_listings')
+
+def add_listings(request):
+    if request.method == 'POST':
+        form = ListingForm(request.POST, request.FILES)
+        if form.is_valid():
+            listing_title = form.cleaned_data['listing_title']
+            listing = form.save(commit=False)
+            listing.owner = get_owner(request)
+            listing.slug = slugify(listing_title)
+            form.save()
+            
+            messages.success(request, 'Listing submitted for approval successfully')
+            return redirect('listings_by_category', listing.category.id)
+        else:
+            print(form.errors)
+    else:      
+        form = ListingForm()
+    context = {
+        'form': form,
+    }
+    return render(request, 'owner/add_listings.html', context)

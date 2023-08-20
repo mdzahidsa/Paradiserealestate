@@ -1,5 +1,9 @@
 from django.db import models
 from owner.models import Owner
+from django.core.mail import send_mail
+from django.template.loader import render_to_string
+
+from django.conf import settings
 # Create your models here.
 class Category(models.Model):
     owner = models.ForeignKey(Owner, on_delete=models.CASCADE)
@@ -12,10 +16,6 @@ class Category(models.Model):
     class Meta:
         verbose_name = 'Category'
         verbose_name_plural = 'Categories'
-
-    def clean(self):
-        self.category_name = self.category_name.capitalize()
-        
     def __str__(self):
         return self.category_name
     
@@ -41,3 +41,32 @@ class Listings(models.Model):
     def __str__(self):
         return self.listing_title
 
+    def save(self, *args, **kwargs):
+        # Check if is_approved field has changed to True
+        if self.pk is not None:
+            orig = Listings.objects.get(pk=self.pk)
+            if orig.is_approved != self.is_approved:
+                owner_email = self.owner.user.email  # Get owner's email from User model
+                
+                mail_template = 'accounts/emails/listing_approved.html'  # Path to your HTML template
+                context = {
+                    'owner_fullname':self.owner.owner_fullname,
+                    'listing_title': self.listing_title,
+                    'is_approved':self.is_approved,
+                }
+                message = render_to_string(mail_template, context)  # Render the HTML template
+
+                from_email = settings.DEFAULT_FROM_EMAIL  # Set your sender email here
+                recipient_list = [owner_email]
+
+                if self.is_approved == True:
+                    #send email
+                    mail_subject = "Congratulations,Your account has been approved."
+                  
+                    send_mail(mail_subject, message, from_email, recipient_list, fail_silently=False)
+                else:
+                    mail_subject = "We Regret to inform,Your account could not be created."
+                   
+                    send_mail(mail_subject, message, from_email, recipient_list, fail_silently=False)
+                # Send the email notification
+        super(Listings, self).save(*args, **kwargs)

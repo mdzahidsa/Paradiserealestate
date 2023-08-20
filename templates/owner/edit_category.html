@@ -25,6 +25,8 @@
                             <h2>CREATE YOUR LISTING</h2>
                             <!-- Create listings Form Start -->
                            <hr>
+                           <button class="btn btn-secondary" onclick="history.back()"><i class="fa fa-angle-left" aria-hidden="true"></i> BACK</button>
+                           <br><br>
                            <h6>Edit Category</h6>
                        <form action="{% url 'edit_category' category.id %}" method="POST">
                          {% csrf_token %}

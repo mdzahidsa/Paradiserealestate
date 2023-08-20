@@ -1,0 +1,14 @@
+{% autoescape off %}
+Hello {{owner_fullname}}.
+
+{% if is_approved %}
+
+Congratulations! Your listing  {{listing_title}} has been approved.
+
+{% else %}
+We Regret to inform,Your listing {{listing_title}} could not be created.Please contact the customer support.
+{% endif %}
+
+Thank you.
+Team Paradise-realestate
+{% endautoescape %}
