@@ -3,7 +3,7 @@
         <ul>
             <li class="{% if '/accounts/ownerDashboard/' == request.path or '/accounts/owner/' == request.path %}active{% endif %}"><a href="{% url 'ownerDashboard' %}"><i class="icon-dashboard3"></i>Dashboard</a></li>
             <li class="{% if 'profile' in request.path %}active{% endif %}"><a href="{% url 'oprofile' %}"><i class="icon-building"></i>Profile Settings</a></li>
-            <li><a href="restaurant-menu-builder.html"><i class="icon-menu5"></i>Create Listings</a></li>
+            <li class="{% if 'create-listings' in request.path %}active{% endif %}"><a href="{% url 'create_listings' %}"><i class="icon-menu5"></i>Create Listings</a></li>
             <li><a href="restaurant-earnings.html"><i class="icon-money"></i>My Listings</a></li>
             <li><a href="restaurant-earnings.html"><i class="icon-money"></i>Confirmed Listings</a></li>
             <li><a href="restaurant-earnings.html"><i class="icon-money"></i>Listings Requests</a></li>
