@@ -134,3 +134,40 @@ def add_listings(request):
         'form': form,
     }
     return render(request, 'owner/add_listings.html', context)
+
+def edit_listings(request, pk=None):
+    listing = get_object_or_404(Listings, pk=pk)
+    if request.method == 'POST':
+        form = ListingForm(request.POST, request.FILES, instance=listing)
+        if form.is_valid():
+            listingtitle = form.cleaned_data['listing_title']
+            listing = form.save(commit=False)
+            listing.owner = get_owner(request)
+            listing.slug = slugify(listingtitle)
+            form.save()
+            messages.success(request, 'Listing updated successfully')
+            return redirect('listings_by_category', listing.category.id)
+        else:
+            print(form.errors)
+    else:  
+        form = ListingForm(instance=listing)
+    context = {
+        'form': form,
+        'listing':listing,
+    }
+    return render(request, 'owner/edit_listings_main.html', context)
+
+def delete_listings(request, pk=None):
+    listing = get_object_or_404(Listings, pk=pk)
+    listing.delete()
+    messages.success(request, 'Listing has been removed successfully.')
+    return redirect('listings_by_category', listing.category.id)
+
+def viewdetail_listings(request, pk=None):
+    listing = get_object_or_404(Listings, pk=pk)
+    form = ListingForm(instance=listing)
+    context = {
+        'form': form,
+        'listing':listing,
+    }
+    return render(request, 'owner/view_listing_details.html', context)

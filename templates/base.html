@@ -27,8 +27,9 @@
 	<script src="{% static 'js/modernizr.js' %}"></script>
 	<script src="{% static '/js/bootstrap.js' %}"></script>
 	<script src="https://maps.googleapis.com/maps/api/js?key={{GOOGLE_API_KEY}}&libraries=places&callback=initAutoComplete" async defer></script>
-
+	
 	<script src="{% static 'js/custom.js' %}"></script>
+	
 	<style>
         .main-search.fancy.bg-holder {
 			background-color: rgba(161, 161, 160, 0.836) !important;
@@ -40,6 +41,32 @@
 			font:Normal  14px/24px "Open Sans", sans-serif;letter-spacing: 0px;text-transform: none;color: #515151 !important;
 		}
 	</style>	
+	<style>
+	
+		.navbar {
+		background-color: #333;
+		overflow: hidden;
+	}
+	
+	/* Style for the navbar links */
+	.navbar a {
+		float: left;
+		display: block;
+		color: white;
+		text-align: center;
+		padding: 14px 16px;
+		text-decoration: none;
+	}
+	
+	/* Change color on hover */
+	.navbar a:hover {
+		background-color:#FF8C88 !important;;
+		color: black;
+	}
+
+</style>
+	
+	
 </head>
 
 <body>

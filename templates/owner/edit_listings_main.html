@@ -27,25 +27,79 @@
                            <hr>
                            <button class="btn btn-secondary" onclick="history.back()"><i class="fa fa-angle-left" aria-hidden="true"></i> BACK</button>
                            <br><br>
-                       <form action="{% url 'edit_listings_main' %}" method="POST">
+                       <form action="{% url 'edit_listings' listing.id %}" method="POST" enctype="multipart/form-data">
                          {% csrf_token %}
-                        <div class="form-fields-set">
-                                <div class="row">
-                                    <div class="col-lg-12 col-md-12 col-sm-12">
-                                          <div class="field-holder">
-                                            <label>Category Name</label>
-                                            {{form.category_name}}
-                                          </div>  
-                                    </div>
-                                    <div class="col-lg-12 col-md-12 col-sm-12">
-                                        <div class="field-holder">
-                                          <label>Description</label>
-                                          {{form.description}}
-                                        </div>  
-                                  </div>
+                         <div class="form-fields-set">
+                            <div class="row">
+                                <div class="col-lg-6 col-md-6 col-sm-12">
+                                      <div class="field-holder">
+                                        <label>Title</label>
+                                        {{form.listing_title}}
+                                      </div>  
                                 </div>
-
+                                <div class="col-lg-6 col-md-6 col-sm-12">
+                                    <div class="field-holder">
+                                      <label>Category</label>
+                                      {{form.category}}
+                                    </div>  
+                              </div>
+                                <div class="col-lg-12 col-md-12 col-sm-12">
+                                    <div class="field-holder">
+                                      <label>Description</label>
+                                      {{form.description}}
+                                    </div>  
+                              </div>
+                              <div class="col-lg-6 col-md-6 col-sm-12">
+                                <div class="field-holder">
+                                  <label>Price</label>
+                                  {{form.price}}
+                                </div>  
                           </div>
+                          <div class="col-lg-12 col-md-12 col-sm-12">
+                            <div class="field-holder">
+                              <label>Address</label>
+                              {{form.address}}
+                            </div>  
+                      </div>
+                      <div class="col-lg-6 col-md-6 col-sm-12">
+                        <div class="field-holder">
+                          <label>Latitude</label>
+                          {{form.latitude}}
+                        </div>  
+                  </div>
+                  <div class="col-lg-6 col-md-6 col-sm-12">
+                    <div class="field-holder">
+                      <label>Longitude</label>
+                      {{form.longitude}}
+                    </div>  
+              </div>
+              <div class="col-lg-6 col-md-6 col-sm-12">
+                <div class="field-holder">
+                  <label>Picture 1</label>
+                  {{form.image1}}
+                </div>  
+          </div>
+          <div class="col-lg-6 col-md-6 col-sm-12">
+            <div class="field-holder">
+              <label>Picture 2</label>
+              {{form.image2}}
+            </div>  
+      </div>
+      <div class="col-lg-6 col-md-6 col-sm-12">
+        <div class="field-holder">
+          <label>Picture 3</label>
+          {{form.image3}}
+        </div>  
+  </div>
+  <div class="col-lg-6 col-md-6 col-sm-12">
+    <div class="field-holder">
+      <label>Available :</label>
+      {{form.is_available}}
+    </div>  
+</div>
+                            </div>
+
+                      </div>
 
                         {% for field in form %}
                             {% if field.errors %}
@@ -56,7 +110,7 @@
                         {% endfor %}
 
                         <button type="submit" class="btn btn-info float-right">Update</button>
-
+                        <a href="{% url 'delete_listings' listing.id %}" onclick="return confirm('Are you sure you want to delete the listing ?')"><i class="btn btn-danger" aria-hidden="true">Delete</i></a>
                        </form>
                             
                         </div>

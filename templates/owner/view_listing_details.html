@@ -1,0 +1,144 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+
+<!--{% if user.role == 1 %}
+<h4>Welcome {{user.username}},You are a owner.</h4>
+{% else %}
+<h4>Welcome {{user.username}} ,You are a tenant.</h4>
+{% endif %}-->
+<div class="main-section">
+    {% include 'includes/cover.html' %}
+    <div class="page-section account-header buyer-logged-in">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-3 col-md-3 col-sm-12 col-xs-12">
+                  <!-- LOad side bar here-->
+
+                    {% include 'includes/o_sidebar.html' %}
+
+                </div>
+                <div class="col-lg-9 col-md-9 col-sm-12 col-xs-12">
+                    <div class="user-dashboard loader-holder">
+                        <div class="user-holder">
+                            <h2>YOUR YOUR LISTING</h2>
+                            <!-- Create listings Form Start -->
+                           <hr>
+                           <div class="container">
+                          
+                            <div id="myCarousel" class="carousel slide" data-ride="carousel">
+                              <ol class="carousel-indicators">
+                                <li data-target="#myCarousel" data-slide-to="0" class="active"></li>
+                                <li data-target="#myCarousel" data-slide-to="1"></li>
+                                <li data-target="#myCarousel" data-slide-to="2"></li>
+                              </ol>
+                          
+                              <div class="carousel-inner">
+                                <div class="carousel-item active">
+                                  <img src="{{listing.image1.url}}" alt="Slide 1" style="width:100%; height:450px;">
+                                </div>
+                                <div class="carousel-item">
+                                  <img src="{{listing.image2.url}}" alt="Slide 2" style="width:100%; height:450px;">
+                                </div>
+                                <div class="carousel-item">
+                                  <img src="{{listing.image3.url}}" alt="Slide 3" style="width:100%; height:450px;">
+                                </div>
+                              </div>
+                          
+                              <a class="carousel-control-prev" href="#myCarousel" data-slide="prev">
+                                <span class="carousel-control-prev-icon"></span>
+                              </a>
+                              <a class="carousel-control-next" href="#myCarousel" data-slide="next">
+                                <span class="carousel-control-next-icon"></span>
+                              </a>
+                            </div>
+                          
+                            <div class="row mt-4 justify-content-center">
+                              <div class="col-4">
+                                <img class="d-block w-100" src="{{listing.image1.url}}" alt="Thumbnail 1" style="height: 80px;" onclick="$('#myCarousel').carousel(0);">
+                              </div>
+                              <div class="col-4">
+                                <img class="d-block w-100" src="{{listing.image2.url}}" alt="Thumbnail 2" style="height: 80px;" onclick="$('#myCarousel').carousel(1);">
+                              </div>
+                              <div class="col-4">
+                                <img class="d-block w-100" src="{{listing.image3.url}}" alt="Thumbnail 3" style="height: 80px;" onclick="$('#myCarousel').carousel(2);">
+                              </div>
+                            </div>
+                            
+                          </div>
+                          
+                          <div class="row">
+                            <div class="col-lg-6 col-md-6 col-sm-12">
+                                <div class="field-holder">
+                                    <label>Title</label>
+                                    <input type="text" placeholder="{{listing.listing_title}}" disabled>
+                                </div>
+                            </div>
+                            <div class="col-lg-6 col-md-6 col-sm-12">
+                                <div class="field-holder">
+                                    <label>Category</label>
+                                    <input type="text" placeholder="{{listing.category}}" disabled>
+
+                                 
+                                </div>
+                            </div>
+                            <div class="col-lg-12 col-md-12 col-sm-12">
+                                <div class="field-holder">
+                                    <label>Description</label>
+                                    <textarea placeholder="{{listing.description}}" disabled></textarea>
+                                    
+                                </div>
+                            </div>
+                            <div class="col-lg-6 col-md-6 col-sm-12">
+                                <div class="field-holder">
+                                    <label>Price</label>
+                                    <input type="text" placeholder="{{listing.price}}" disabled>
+
+                                </div>
+                            </div>
+                            <div class="col-lg-12 col-md-12 col-sm-12">
+                                <div class="field-holder">
+                                    <label>Address</label>
+                                  
+                                    <input type="text" placeholder="{{listing.address}}" disabled>
+
+                                </div>
+                            </div>
+                            <div class="col-lg-6 col-md-6 col-sm-12">
+                                <div class="field-holder">
+                                    <label>Latitude</label>
+                                    <input type="text" placeholder="{{listing.latitude}}" disabled>
+
+                                  
+                                </div>
+                            </div>
+                            <div class="col-lg-6 col-md-6 col-sm-12">
+                                <div class="field-holder">
+                                    <label>Longitude</label>
+                                    <input type="text" placeholder="{{listing.longitude}}" disabled>
+                                
+                                    
+                                </div>
+                            </div>
+                        </div>                      
+    
+    <!-- Map container -->
+    <div id="googleMap" style="width:100%;height:400px;"></div>
+    <!-- Elements to display latitude and longitude -->
+    
+                            
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.1/dist/umd/popper.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
+{% include 'includes/alerts.html' %}
+{% endblock %}

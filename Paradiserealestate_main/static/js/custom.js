@@ -1,18 +1,30 @@
 
-
+function initAutoComplete(){
+    initialize();
+    myMap();
+}
 let autocomplete;
 
-function initAutoComplete(){
-autocomplete = new google.maps.places.Autocomplete(
-    document.getElementById('id_address'),
-    {
-        types: ['geocode', 'establishment'],
-        //default in this app is "IN" - add your country code
-        componentRestrictions: {'country': ['in','qa','ie']},
-    })
-// function to specify what should happen when the prediction is clicked
-autocomplete.addListener('place_changed', onPlaceChanged);
+function initialize(){
+    autocomplete = new google.maps.places.Autocomplete(
+        document.getElementById('id_address'),
+        {
+            types: ['geocode', 'establishment'],
+            //default in this app is "IN" - add your country code
+            componentRestrictions: {'country': ['in','qa','ie']},
+        })
+    // function to specify what should happen when the prediction is clicked
+    autocomplete.addListener('place_changed', onPlaceChanged);
+    
 }
+
+function myMap() {
+    var mapProp= {
+      center:new google.maps.LatLng(51.508742,-0.120850),
+      zoom:5,
+    };
+    var map = new google.maps.Map(document.getElementById("googleMap"),mapProp);
+    }
 
 function onPlaceChanged (){
     var place = autocomplete.getPlace();

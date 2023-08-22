@@ -40,6 +40,11 @@
                                 <div class="card mb-3">
                     <div class="card-body">
       <h5 class="card-title mb-0">{{ forloop.counter }}</h5>
+      {% if list.is_available %}
+      <span class="badge badge-success" style="position: absolute;">Available</span>
+      {% else %}
+      <span class="badge badge-secondary" style="position: absolute;">Unavailable</span>
+      {% endif %}
       <img src="{{list.image1.url}}" alt="Image" class="img-fluid" style="width: 150px;height:100px;object-fit:cover;">
       <a href="#" class="card-text">
         <p class="mb-0 font-weight-bold">{{ list }}</p>
@@ -47,9 +52,17 @@
       </a>
     </div>
     <div class="card-footer">
+      {% if list.is_approved %}
+      <span class="badge badge-success" style="position: absolute;">Approved</span>
+      {% else %}
+      <span class="badge badge-secondary" style="position: absolute;">Under review</span>
+      {% endif %}
         <div class="float-right">
-          <i class="fa fa-pencil mr-2" aria-hidden="true"></i>
-          <i class="fa fa-trash text-danger" aria-hidden="true"></i>
+          
+          <a href="{% url 'viewdetail_listings' list.id %}"><i class="fa fa-eye mr-2" aria-hidden="true"></i></a>
+
+          <a href="{% url 'edit_listings' list.id %}"><i class="fa fa-pencil mr-2" aria-hidden="true"></i></a>
+          <a href="{% url 'delete_listings' list.id %}" onclick="return confirm('Are you sure you want to delete the listing ?')"><i class="fa fa-trash text-danger" aria-hidden="true"></i></a>
         </div>
     </div>
   </div>
@@ -62,7 +75,7 @@
                           
                           <h5 class="class text-center">No Listings Found.</h5>
                           <div class="text-center">
-                            <a href="#" class="btn btn-success"><i class="fa fa-plus" aria-hidden="true">&nbsp;</i>Create Listings</a>
+                            <a href="{% url 'add_listing' listing.id %}" class="btn btn-success"><i class="fa fa-plus" aria-hidden="true">&nbsp;</i>Create Listings</a>
                           </div>
                         
                           {% endif%}

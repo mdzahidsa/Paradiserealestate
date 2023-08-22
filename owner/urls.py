@@ -13,6 +13,9 @@ urlpatterns = [
     path('create-listings/category/edit/<int:pk>/', views.edit_category, name='edit_category'),
     path('create-listings/category/delete/<int:pk>/', views.delete_category, name='delete_category'),
     path('create-listings/listings/add/', views.add_listings, name='add_listings'),
+    path('create-listings/listings/edit/<int:pk>/', views.edit_listings, name='edit_listings'),
+    path('create-listings/listings/delete/<int:pk>/', views.delete_listings, name='delete_listings'),
+    path('create-listings/listings/viewdetail/<int:pk>/', views.viewdetail_listings, name='viewdetail_listings'),
 
 
 ]
