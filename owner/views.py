@@ -65,6 +65,8 @@ def listings_by_category(request, pk=None):
     }
     return render(request, 'owner/listings_by_category.html', context)
 
+@login_required(login_url='login')
+@user_passes_test(check_role_owner)
 def add_category(request):
     if request.method == 'POST':
         form = CategoryForm(request.POST)
@@ -84,6 +86,8 @@ def add_category(request):
     }
     return render(request, 'owner/add_category.html', context)
 
+@login_required(login_url='login')
+@user_passes_test(check_role_owner)
 def edit_category(request, pk=None):
     category = get_object_or_404(Category, pk=pk)
     if request.method == 'POST':
@@ -105,12 +109,16 @@ def edit_category(request, pk=None):
     }
     return render(request, 'owner/edit_category.html', context)
 
+@login_required(login_url='login')
+@user_passes_test(check_role_owner)
 def delete_category(request, pk=None):
     category = get_object_or_404(Category, pk=pk)
     category.delete()
     messages.success(request, 'Category has been deleted successfully.')
     return redirect('create_listings')
 
+@login_required(login_url='login')
+@user_passes_test(check_role_owner)
 def add_listings(request):
     if request.method == 'POST':
         form = ListingForm(request.POST, request.FILES)
@@ -134,6 +142,8 @@ def add_listings(request):
     }
     return render(request, 'owner/add_listings.html', context)
 
+@login_required(login_url='login')
+@user_passes_test(check_role_owner)
 def edit_listings(request, pk=None):
     listing = get_object_or_404(Listings, pk=pk)
     if request.method == 'POST':
@@ -157,12 +167,16 @@ def edit_listings(request, pk=None):
     }
     return render(request, 'owner/edit_listings_main.html', context)
 
+@login_required(login_url='login')
+@user_passes_test(check_role_owner)
 def delete_listings(request, pk=None):
     listing = get_object_or_404(Listings, pk=pk)
     listing.delete()
     messages.success(request, 'Listing has been removed successfully.')
     return redirect('listings_by_category', listing.category.id)
 
+@login_required(login_url='login')
+@user_passes_test(check_role_owner)
 def viewdetail_listings(request, pk=None):
     listing = get_object_or_404(Listings, pk=pk)
     form = ListingForm(instance=listing)
