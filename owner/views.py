@@ -8,7 +8,6 @@ from django.contrib.auth.decorators import login_required,user_passes_test
 from accounts.views import check_role_owner
 from listings.models import Category,Listings
 from listings.forms import CategoryForm,ListingForm
-from django.template.defaultfilters import slugify
 def get_owner(request):
     owner = Owner.objects.get(user=request.user)
     return owner
@@ -73,7 +72,6 @@ def add_category(request):
             category_name = form.cleaned_data['category_name']
             category = form.save(commit=False)
             category.owner = get_owner(request)
-            category.slug = slugify(category_name)
             form.save()
             messages.success(request, 'Category added successfully')
             return redirect('create_listings')
@@ -94,7 +92,6 @@ def edit_category(request, pk=None):
             category_name = form.cleaned_data['category_name']
             category = form.save(commit=False)
             category.owner = get_owner(request)
-            category.slug = slugify(category_name)
             form.save()
             messages.success(request, 'Category updated successfully')
             return redirect('create_listings')
@@ -121,7 +118,7 @@ def add_listings(request):
             listing_title = form.cleaned_data['listing_title']
             listing = form.save(commit=False)
             listing.owner = get_owner(request)
-            listing.slug = slugify(listing_title)
+           
             form.save()
             
             messages.success(request, 'Listing submitted for approval successfully')
@@ -130,8 +127,10 @@ def add_listings(request):
             print(form.errors)
     else:      
         form = ListingForm()
+        form.fields['category'].queryset = Category.objects.filter(owner=get_owner(request))
     context = {
         'form': form,
+        
     }
     return render(request, 'owner/add_listings.html', context)
 
@@ -143,7 +142,7 @@ def edit_listings(request, pk=None):
             listingtitle = form.cleaned_data['listing_title']
             listing = form.save(commit=False)
             listing.owner = get_owner(request)
-            listing.slug = slugify(listingtitle)
+        
             form.save()
             messages.success(request, 'Listing updated successfully')
             return redirect('listings_by_category', listing.category.id)
@@ -151,6 +150,7 @@ def edit_listings(request, pk=None):
             print(form.errors)
     else:  
         form = ListingForm(instance=listing)
+        form.fields['category'].queryset = Category.objects.filter(owner=get_owner(request))
     context = {
         'form': form,
         'listing':listing,

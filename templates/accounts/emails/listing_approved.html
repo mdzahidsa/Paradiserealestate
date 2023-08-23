@@ -1,12 +1,17 @@
 {% autoescape off %}
 Hello {{owner_fullname}}.
 
-{% if is_approved %}
+{% if is_approved == True%}
 
 Congratulations! Your listing  {{listing_title}} has been approved.
 
-{% else %}
+{% elif is_rejected == True %}
+
 We Regret to inform,Your listing {{listing_title}} could not be created.Please contact the customer support.
+
+{% else %}
+Your listing {{listing_title}} is under review.
+
 {% endif %}
 
 Thank you.

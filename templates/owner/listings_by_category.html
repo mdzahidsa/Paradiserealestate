@@ -54,6 +54,8 @@
     <div class="card-footer">
       {% if list.is_approved %}
       <span class="badge badge-success" style="position: absolute;">Approved</span>
+      {% elif list.is_rejected %}
+      <span class="badge badge-danger" style="position: absolute;">Rejected</span>
       {% else %}
       <span class="badge badge-secondary" style="position: absolute;">Under review</span>
       {% endif %}
@@ -75,7 +77,7 @@
                           
                           <h5 class="class text-center">No Listings Found.</h5>
                           <div class="text-center">
-                            <a href="{% url 'add_listing' listing.id %}" class="btn btn-success"><i class="fa fa-plus" aria-hidden="true">&nbsp;</i>Create Listings</a>
+                            <a href="{% url 'add_listings' %}" class="btn btn-success"><i class="fa fa-plus" aria-hidden="true">&nbsp;</i>Create Listings</a>
                           </div>
                         
                           {% endif%}
