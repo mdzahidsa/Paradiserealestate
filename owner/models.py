@@ -6,6 +6,7 @@ class Owner(models.Model):
     user = models.OneToOneField(User, related_name='user', on_delete=models.CASCADE)
     user_profile = models.OneToOneField(UserProfile, related_name='userprofile', on_delete=models.CASCADE)
     owner_fullname=models.CharField(max_length=50)
+    owner_slug = models.SlugField(max_length=100, unique=True)
     owner_ID = models.ImageField(upload_to="owner/ID")
     owner_addressproof = models.ImageField(upload_to="owner/addressproof")
     is_approved = models.BooleanField(default=False)

@@ -1,0 +1,124 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+		<!-- Main Section Start -->
+        <div class="main-section">
+            <div class="page-section restaurant-detail-image-section" style=" background: url({% if owner.user_profile.cover_photo %}{{owner.user_profile.cover_photo.url}}{% else %}{% static 'images/default-cover.png' %}{% endif %}) no-repeat scroll 0 0 / cover;">
+                <!-- Container Start -->
+                <div class="container">
+                    <div class="row">
+                        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                            <div class="company-info-detail">
+                                <div class="company-info d-flex align-items-center">
+                                    <div class="img-holder" style="width: 200px; height: 200px;" >
+                                        <figure>
+                                            {% if owner.user_profile.profile_picture %}
+                                            <img class="img-fluid "  src="{{ owner.user_profile.profile_picture.url }}" alt="">
+                                            {% else %}
+                                            <img class="img-fluid "  src="{% static 'images/default-profile.png' %}" alt="">
+                                            {% endif %}
+                                        </figure>
+                                    </div>
+                                    <div class="text-holder ml-2">
+                                        <h3 class="restaurant-title" style="color: white !important;">{{ owner.owner_fullname }}</h3>
+                                        <!-- Additional text or information can be added here -->
+                                    </div>
+                                </div>
+                                <!-- Additional content related to company info can be added here -->
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Container End -->
+            </div>
+
+            <div class="page-section">
+                <div class="container">
+                    <div class="row">
+                        <div class="col-lg-3 col-md-3 col-sm-4 col-xs-12 sticky-sidebar">
+                            
+                            <div class="filter-wrapper">
+                                <div class="categories-menu">
+                                    <h6><i class="icon-restaurant_menu"></i>Categories</h6>
+                                  
+                                    <ul class="menu-list">
+                                        {% for category in categories %}
+                                        <li class="active"><a href="#" class="menu-category-link"> {{category}} </a></li>
+                                     {% endfor %}
+                                    </ul>
+
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-lg-9 col-md-9 col-sm-8 col-xs-12">
+                            <div class="tabs-holder horizontal">
+                                <ul class="stickynav-tabs nav nav-tabs">
+                                    <li class="active"><a data-toggle="tab" href="#home"><i class="icon- icon-room_service"></i>Menu</a></li>
+                                    
+                                </ul>
+                                <div class="tab-content">
+                                    <div id="home" class="tab-pane in active">
+                                        <div class="menu-itam-holder">
+                                            
+                                            <div id="menu-item-list-6272" class="menu-itam-list">
+                                                {% for category in categories %}
+                                                
+                                                <div class="element-title" id="menu-category-2">
+                                                    <h5 class="text-color">{{category}}</h5>
+                                                    <span>{{category.description}}</span>
+                                                </div>
+                                                <div class="container">
+                                                    <div class="row">
+                                                        {% for list in category.listings.all %}
+                                                        <div class="card ml-1" style="width: 280px; padding: 5px;">
+                                                            <div class="card-body">
+                                                                {% if list.is_available %}
+                                                                <span class="badge badge-success" style="position: absolute;">Available</span>
+                                                                {% else %}
+                                                                <span class="badge badge-secondary" style="position: absolute;">Unavailable</span>
+                                                                {% endif %}
+                                                                <div class="img-container" style="width: 100%; height: 300px; overflow: hidden;">
+                                                                    <a href="{% url 'view_detail_listing' owner.owner_slug list.id %}">
+                                                                        <img src="{{list.image1.url}}" alt="Image" class="img-fluid" style="width: 100%; height: 100%; object-fit: cover;">
+                                                                    </a>
+                                                                </div>
+                                                                <a href="{% url 'view_detail_listing' owner.owner_slug list.id %}" class="card-text">
+                                                                    <p class="mb-0 font-weight-bold">{{ list }}</p>
+                                                                    <small class="text-muted">{{ list.description|truncatewords:10 }}{% if list.description|wordcount > 10 %}........{% endif %}</small>
+                                                                </a>
+                                                            </div>
+                                                            <div class="card-footer">
+                                                                <div class="row align-items-center">
+                                                                    <div class="col-md-6">
+                                                                        <p class="mb-0 font-weight-bold">Price :{{ list.price }}</p>
+                                                                    </div>
+                                                                   
+                                                                    
+                                                                    <div class="col-md-12 ">
+                                                                        <small class="text-muted">Last updated at {{ list.modified_at|timesince }}</small>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        {% endfor %}
+                                                    </div>
+                                                </div>
+                                                
+                                              {% endfor %}
+                                            </div> 
+                                             
+                                        </div>
+                                    </div>
+                                    
+                                </div>
+                            </div>
+                        </div>
+                        
+                    </div>
+                </div>
+            </div>
+        </div>
+		<!-- Main Section End -->
+{% endblock %}

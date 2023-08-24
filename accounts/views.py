@@ -10,6 +10,7 @@ from .utils import detectUser,send_verification_email
 from django.core.exceptions import PermissionDenied
 from django.utils.http import urlsafe_base64_decode
 from django.contrib.auth.decorators import login_required,user_passes_test
+from django.template.defaultfilters import slugify
 # Create your views here.
 
 #restrict owners from gaining access to tenant dashboard
@@ -68,6 +69,8 @@ def registerOwner(request):
             user.save()
             owner = o_form.save(commit=False)
             owner.user = user
+            owner_fullname = o_form.cleaned_data['owner_fullname']
+            owner.owner_slug = slugify(owner_fullname)+'-'+str(user.id)
             user_profile = UserProfile.objects.get(user=user)
             owner.user_profile = user_profile
             owner.save()
