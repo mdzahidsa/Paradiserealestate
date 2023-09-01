@@ -1,0 +1,64 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+
+<div class="main-section">
+    {% include 'includes/cover.html' %}
+    <div class="page-section account-header buyer-logged-in">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-3 col-md-3 col-sm-12 col-xs-12">
+                    {% include 'includes/t_sidebar.html' %}
+                </div>
+                <div class="col-lg-9 col-md-9 col-sm-12 col-xs-12">
+                    <div class="user-dashboard loader-holder">
+                        <h1>Rent Payment</h1>
+                        <div class="listing-details">
+                            <h2>Listing Details</h2>
+                            <p><strong>Owner Name:</strong> {{ listing.owner.owner_fullname }}</p>
+                            <p><strong>Tenant Name:</strong> {{ request.full_name }}</p>
+                            <p><strong>Listing Title:</strong> {{ listing.listing_title }}</p>
+                            <p><strong>Monthly Rent:</strong> ${{ listing.price }}</p>
+                        </div>
+                        <hr>
+                        <div class="payment-form">
+                            <h2>Select Payment Month</h2>
+                            <form method="post" action="{% url 'rent_payment_form' listing_id=request.listing.id %}">
+                                {% csrf_token %}
+                                <div class="form-group">
+                                    <label for="payment_month">Payment Month</label>
+                                    <select class="form-control" name="payment_month" id="payment_month">
+                                        <option value="January">January</option>
+                                        <option value="February">February</option>
+                                        <option value="March">March</option>
+                                        <option value="April">April</option>
+                                        <option value="May">May</option>
+                                        <option value="June">June</option>
+                                        <option value="July">July</option>
+                                        <option value="August">August</option>
+                                        <option value="September">September</option>
+                                        <option value="October">October</option>
+                                        <option value="November">November</option>
+                                        <option value="December">December</option>
+                                    </select>
+                                </div>
+                                <hr>
+                                <button type="submit" class="btn btn-success">Make Payment</button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script src="https://www.paypalobjects.com/api/checkout.js"></script>
+<script>
+    document.querySelector('form').addEventListener('submit', function(event) {
+        event.preventDefault();
+        // Submit the form via JavaScript after PayPal payment is executed
+    });
+</script>
+{% include 'includes/alerts.html' %}
+{% endblock %}

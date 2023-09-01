@@ -1,0 +1,17 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+
+<div class="container">
+    <h1>Rent Receipt</h1>
+    <p><strong>Owner Name:</strong> {{ payment.listing.owner.owner_fullname }}</p>
+    <p><strong>Tenant Name:</strong> {{ payment.tenant.get_full_name }}</p>
+    <p><strong>Listing Title:</strong> {{ payment.listing.listing_title }}</p>
+    <p><strong>Payment Month:</strong> {{ payment.payment_month }}</p>
+    <p><strong>Rent Amount:</strong> ${{ payment.listing.price }}</p>
+    <p><strong>Payment Date:</strong> {{ payment.payment_date }}</p>
+    <!-- You can add more details if needed -->
+</div>
+
+{% endblock %}

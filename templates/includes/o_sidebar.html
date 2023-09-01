@@ -3,11 +3,9 @@
         <ul>
             <li class="{% if '/accounts/ownerDashboard/' == request.path or '/accounts/owner/' == request.path %}active{% endif %}"><a href="{% url 'ownerDashboard' %}"><i class="icon-dashboard3"></i>Dashboard</a></li>
             <li class="{% if 'profile' in request.path %}active{% endif %}"><a href="{% url 'oprofile' %}"><i class="icon-building"></i>Profile Settings</a></li>
-            <li class="{% if 'create-listings' in request.path %}active{% endif %}"><a href="{% url 'create_listings' %}"><i class="icon-menu5"></i>Create Listings</a></li>
-            <li><a href="restaurant-earnings.html"><i class="icon-money"></i>My Listings</a></li>
-            <li><a href="restaurant-earnings.html"><i class="icon-money"></i>Confirmed Listings</a></li>
-            <li><a href="restaurant-earnings.html"><i class="icon-money"></i>Listings Requests</a></li>
-            <li><a href="restaurant-orders.html"><i class="icon-add_shopping_cart"></i>Orders</a></li>
+            <li class="{% if 'create-listings' in request.path %}active{% endif %}"><a href="{% url 'create_listings' %}"><i class="icon-menu5"></i>My Listings</a></li>
+            <li class="{% if '/finalized-deals/' in request.path %}active{% endif %}"><a href="{% url 'owner_finalized_deals' %}"><i class="icon-money"></i>Confirmed Listings</a></li>
+            <li><a href="{% url 'owner_received_requests' owner_slug=owner.owner_slug %}"><i class="icon-money"></i>Listings Requests</a></li>
             <li><a href="restaurant-statement.html"><i class="icon-file-text22"></i>Statement</a></li>
             <li><a href="restaurant-change-password.html"><i class="icon-unlock-alt"></i>Change Password</a></li>
             <li><a class="logout-btn" href="registration.html"><i class="icon-log-out"></i>Signout</a></li>

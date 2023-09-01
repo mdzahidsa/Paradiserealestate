@@ -1,0 +1,47 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+
+<div class="main-section">
+    {% include 'includes/cover.html' %}
+    <div class="page-section account-header buyer-logged-in">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-3 col-md-3 col-sm-12 col-xs-12">
+                    {% include 'includes/t_sidebar.html' %}
+                </div>
+                <div class="col-lg-9 col-md-9 col-sm-12 col-xs-12">
+                    <div class="user-dashboard loader-holder">
+                        <h1>Rents Paid for "{{ listing.listing_title }}"</h1>
+                        <table class="table">
+                            <thead>
+                                <tr>
+                                    <th scope="col">Owner</th>
+                                    <th scope="col">Payment Month</th>
+                                    <th scope="col">Payment Date</th>
+                                    <th scope="col">Rent Amount</th>
+                                    <th scope="col">Receipt</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for rent in rents_paid %}
+                                <tr>
+                                    <td>{{ rent.listing.owner.owner_fullname }}</td>
+                                    <td>{{ rent.payment_month }}</td>
+                                    <td>{{ rent.payment_date }}</td>
+                                    <td>${{ rent.listing.price }}</td>
+                                    <td><a href="#" target="_blank">View Receipt</a></td>
+                                </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% include 'includes/alerts.html' %}
+{% endblock %}

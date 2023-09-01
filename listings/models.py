@@ -2,7 +2,7 @@ from django.db import models
 from owner.models import Owner
 from django.core.mail import send_mail
 from django.template.loader import render_to_string
-
+from accounts.models import User
 from django.conf import settings
 # Create your models here.
 class Category(models.Model):
@@ -30,6 +30,7 @@ class Listings(models.Model):
     image1 = models.ImageField(upload_to='listingimages')
     image2 = models.ImageField(upload_to='listingimages')
     image3 = models.ImageField(upload_to='listingimages')
+    
     is_available = models.BooleanField(default=True)
     is_approved = models.BooleanField(default=False)
     is_rejected = models.BooleanField(default=False)
@@ -69,3 +70,30 @@ class Listings(models.Model):
                 send_mail(mail_subject, message, from_email, recipient_list, fail_silently=False)
 
         super(Listings, self).save(*args, **kwargs)
+
+class Request(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    listing = models.ForeignKey(Listings, on_delete=models.CASCADE)
+    full_name = models.CharField(max_length=100)
+    email = models.EmailField()
+    message = models.TextField()
+    user_IDproof = models.ImageField(upload_to='userrequest/id')
+    user_addressproof = models.ImageField(upload_to='userrequest/addressproof')
+    is_ownerapproved = models.BooleanField(default=False)
+    is_ownerrejected = models.BooleanField(default=False)
+    is_adminapproved = models.BooleanField(default=False)
+    is_adminrejected = models.BooleanField(default=False)
+    is_cancelbytenant = models.BooleanField(default=False)
+    is_deal_finalized = models.BooleanField(default=False)
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    @property
+    def email(self):
+        return self.user.email
+
+    @property
+    def full_name(self):
+        return f"{self.user.first_name} {self.user.last_name}"
+
+    def __str__(self):
+        return f"Request by {self.user.email} for {self.listing.listing_title}"

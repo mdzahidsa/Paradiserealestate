@@ -13,13 +13,8 @@
     <div class="page-section account-header buyer-logged-in">
         <div class="container">
             <div class="row">
-                <div class="col-lg-3 col-md-3 col-sm-12 col-xs-12">
-                  <!-- LOad side bar here-->
-
-                    {% include 'includes/o_sidebar.html' %}
-
-                </div>
-                <div class="col-lg-9 col-md-9 col-sm-12 col-xs-12">
+                
+                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
                     <div class="user-dashboard loader-holder">
                         <div class="user-holder">
                             <small>Created On {{listings.created_at}}</small>
@@ -110,7 +105,7 @@
                             <div class="col-lg-6 col-md-6 col-sm-12">
                                 <div class="field-holder">
                                     <label>Latitude</label>
-                                    <input type="text" placeholder="{{listings.latitude}}" disabled>
+                                    <input type="hidden" id="latitude" value="{{listings.latitude}}" disabled>
 
                                   
                                 </div>
@@ -118,7 +113,7 @@
                             <div class="col-lg-6 col-md-6 col-sm-12">
                                 <div class="field-holder">
                                     <label>Longitude</label>
-                                    <input type="text" placeholder="{{listings.longitude}}" disabled>
+                                    <input type="hidden" id="longitude" value="{{listings.longitude}}" disabled>
                                 
                                     
                                 </div>
@@ -134,7 +129,7 @@
                         <hr>
                         <div class="col-lg-12 col-md-12 col-sm-12">
                           <div class="field-holder">
-                              <button class="btn btn-info float-right">Request</button>
+                            <a href="{% url 'place_request' listings.id %}" onclick="return confirm('Are you sure you want send a request ?')"><i class="btn btn-info float-right" aria-hidden="true">Send Request</i></a>
                           </div>
                       </div>
                     </div>
@@ -151,5 +146,5 @@
 <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.1/dist/umd/popper.min.js"></script>
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 
-{% include 'includes/alerts.html' %}
+
 {% endblock %}

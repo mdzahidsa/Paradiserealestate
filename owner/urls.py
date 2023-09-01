@@ -16,6 +16,8 @@ urlpatterns = [
     path('create-listings/listings/edit/<int:pk>/', views.edit_listings, name='edit_listings'),
     path('create-listings/listings/delete/<int:pk>/', views.delete_listings, name='delete_listings'),
     path('create-listings/listings/viewdetail/<int:pk>/', views.viewdetail_listings, name='viewdetail_listings'),
+    path('finalized-deals/', views.owner_finalized_deals, name='owner_finalized_deals'),
+    path('rents-received/<int:listing_id>/', views.owner_view_rents_received, name='owner_view_rents_received'),
 
 
 ]

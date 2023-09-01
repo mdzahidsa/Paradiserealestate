@@ -11,20 +11,38 @@ function initialize(){
         {
             types: ['geocode', 'establishment'],
             //default in this app is "IN" - add your country code
-            componentRestrictions: {'country': ['in','qa','ie']},
+            componentRestrictions: {'country': ['in','qa','ie','ae']},
         })
     // function to specify what should happen when the prediction is clicked
     autocomplete.addListener('place_changed', onPlaceChanged);
     
 }
 
-function myMap() {
-    var mapProp= {
-      center:new google.maps.LatLng(51.508742,-0.120850),
-      zoom:5,
+function myMap(){
+    var defaultLatLng = { lat: 51.508742, lng: -0.120850 }; // Default coordinates
+    var mapProp = {
+      center: defaultLatLng,
+      zoom: 18,
     };
-    var map = new google.maps.Map(document.getElementById("googleMap"),mapProp);
+    var map = new google.maps.Map(document.getElementById("googleMap"), mapProp);
+
+    var latitude = parseFloat(document.getElementById("latitude").value);
+    var longitude = parseFloat(document.getElementById("longitude").value);
+
+    if (!isNaN(latitude) && !isNaN(longitude)) {
+      var markerLatLng = { lat: latitude, lng: longitude };
+      var marker = new google.maps.Marker({
+        position: markerLatLng,
+        map: map,
+      });
+
+      map.setCenter(markerLatLng);
+      map.setZoom(18);
     }
+  }
+
+  // Call the initMap function when the page loads
+  google.maps.event.addDomListener(window, "load", initMap);
 
 function onPlaceChanged (){
     var place = autocomplete.getPlace();

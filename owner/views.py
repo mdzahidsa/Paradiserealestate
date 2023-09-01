@@ -1,4 +1,4 @@
-from django.shortcuts import redirect,render,get_object_or_404
+from django.shortcuts import redirect,render,get_object_or_404,HttpResponse
 from .forms import OwnerForm
 from accounts.forms import UserProfileForm
 from accounts.models import UserProfile
@@ -8,6 +8,9 @@ from django.contrib.auth.decorators import login_required,user_passes_test
 from accounts.views import check_role_owner
 from listings.models import Category,Listings
 from listings.forms import CategoryForm,ListingForm
+from listings.models import Request
+from tenant.models import RentPayment
+from accounts.models import User
 def get_owner(request):
     owner = Owner.objects.get(user=request.user)
     return owner
@@ -117,15 +120,51 @@ def delete_category(request, pk=None):
     messages.success(request, 'Category has been deleted successfully.')
     return redirect('create_listings')
 
+#@login_required(login_url='login')
+##@user_passes_test(check_role_owner)
+#def add_listings(request):
+   ##    form = ListingForm(request.POST, request.FILES)
+     #   if form.is_valid():
+        #    listing_title = form.cleaned_data['listing_title']
+        #    listing = form.save(commit=False)
+        #    listing.owner = get_owner(request)
+           
+        #    form.save()
+            
+         #   messages.success(request, 'Listing submitted for approval successfully')
+         #   return redirect('listings_by_category', listing.category.id)
+      #  else:
+     #       print(form.errors)
+  #  else:      
+  #      form = ListingForm()
+      #  form.fields['category'].queryset = Category.objects.filter(owner=get_owner(request))
+ #   context = {
+   #     'form': form,
+        
+  #  }
+    #return render(request, 'owner/add_listings.html', context)
+
 @login_required(login_url='login')
 @user_passes_test(check_role_owner)
 def add_listings(request):
+    # Define the maximum number of listings per owner
+    MAX_LISTINGS_PER_OWNER = 5
+    
+    owner = get_owner(request)
+    
+    # Check the number of existing listings for the owner
+    existing_listings_count = Listings.objects.filter(owner=owner).count()
+    
+    if existing_listings_count >= MAX_LISTINGS_PER_OWNER:
+        messages.error(request, f'You have reached the maximum limit of {MAX_LISTINGS_PER_OWNER} listings.')
+        return render(request,'marketplace/upgradeplan.html')
+    
     if request.method == 'POST':
         form = ListingForm(request.POST, request.FILES)
         if form.is_valid():
             listing_title = form.cleaned_data['listing_title']
             listing = form.save(commit=False)
-            listing.owner = get_owner(request)
+            listing.owner = owner
            
             form.save()
             
@@ -135,12 +174,13 @@ def add_listings(request):
             print(form.errors)
     else:      
         form = ListingForm()
-        form.fields['category'].queryset = Category.objects.filter(owner=get_owner(request))
+        form.fields['category'].queryset = Category.objects.filter(owner=owner)
+        
     context = {
         'form': form,
-        
     }
     return render(request, 'owner/add_listings.html', context)
+
 
 @login_required(login_url='login')
 @user_passes_test(check_role_owner)
@@ -185,3 +225,28 @@ def viewdetail_listings(request, pk=None):
         'listing':listing,
     }
     return render(request, 'owner/view_listing_details.html', context)
+@login_required(login_url='login')
+@user_passes_test(check_role_owner)
+def owner_finalized_deals(request):
+    owner = get_owner(request)  # Assuming you have a function to get the current owner
+    finalized_deals = Request.objects.filter(
+        listing__owner=owner,
+        is_deal_finalized=True
+    )
+    context = {
+        'finalized_deals': finalized_deals,
+    }
+    return render(request, 'owner/owner_finalized_deals.html', context)
+
+def owner_view_rents_received(request, listing_id):
+    # Retrieve the listing
+    listing = get_object_or_404(Listings, id=listing_id)
+
+    # Retrieve rents received for the finalized deal
+    rents_received = RentPayment.objects.filter(listing=listing)
+
+    context = {
+        'listing': listing,
+        'rents_received': rents_received,
+    }
+    return render(request, 'owner/view_owner_payments.html', context)

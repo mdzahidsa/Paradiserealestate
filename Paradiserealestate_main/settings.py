@@ -43,6 +43,7 @@ INSTALLED_APPS = [
     'owner',
     'listings',
     'marketplace',
+    'tenant',
 ]
 
 MIDDLEWARE = [
@@ -70,7 +71,7 @@ TEMPLATES = [
                 'django.contrib.messages.context_processors.messages',
                 'accounts.context_processors.get_owner',
                 'accounts.context_processors.get_google_api',
-
+                'accounts.context_processors.get_user_profile',
             ],
         },
     },
@@ -158,3 +159,7 @@ EMAIL_USE_TLS = True
 DEFAULT_FROM_EMAIL = config('DEFAULT_FROM_EMAIL')
 
 GOOGLE_API_KEY =  config('GOOGLE_API_KEY')
+
+PAYPAL_CLIENT_ID = config('PAYPAL_CLIENT_ID')
+PAYPAL_CLIENT_SECRET = config('PAYPAL_CLIENT_SECRET')
+PAYPAL_MODE = config('PAYPAL_MODE')

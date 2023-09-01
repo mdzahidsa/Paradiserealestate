@@ -1,0 +1,78 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+
+<div class="main-section">
+    {% include 'includes/cover.html' %}
+    <div class="page-section account-header buyer-logged-in">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-3 col-md-3 col-sm-12 col-xs-12">
+                    <!-- Load side bar here -->
+                    {% include 'includes/t_sidebar.html' %}
+                </div>
+                <div class="col-lg-9 col-md-9 col-sm-12 col-xs-12">
+                    <div class="user-dashboard loader-holder">
+                        <h1>Confirmed Listings Deals</h1>
+                        <div class="row">
+                            {% for request in finalized_deals %}
+                            <div class="col-md-6 mb-4">
+                                <div class="card {% if request.is_ownerrejected %}border-danger{% elif request.is_ownerapproved %}border-success{% else %}border-secondary{% endif %}" style="border-width: 10px;">
+                                    <div class="card-body">
+                                        <h5 class="card-title">Owner Name: {{ request.listing.owner.owner_fullname }}</h5>
+                                        <h5 class="card-title">Tenant Name: {{ request.full_name }}</h5>
+                                        <hr>
+
+                                        <h6 class="card-subtitle mb-2 text-muted">Listing:{{ request.listing.listing_title }}</h6>
+                                        <div class="img-container" style="width: 100%; height: 300px; overflow: hidden;">
+                                            <a href="#">
+                                                <img src="{{request.listing.image1.url}}" alt="Image" class="img-fluid" style="width: 100%; height: 100%; object-fit: cover;">
+                                            </a>
+                                        </div>
+                                        <hr>
+                                        <p class="card-text">
+                                            <label>Price/Rent : </label>
+                                            <input type="text" class="form-control" value="{{ request.listing.price }}" readonly>
+                                        </p>
+                                        <hr>
+                                        <div class="float-right">
+                                            <a href="{% url 'tenant_view_paid_rents' listing_id=request.listing.id %}" class="btn btn-info float-right">View Rent History</a>
+                                        </div>
+                                        <hr>
+                                        <div class="card-footer">
+                                            <a href="#" class="text float-left" download>Download Agreement</a>
+                                            <a href="{% url 'rent_payment_form' listing_id=request.listing.id %}" class="btn btn-success float-right">Pay Rent Paypal</a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            {% endfor %}
+                        </div>
+                        <div class="pagination">
+                            <span class="step-links">
+                                {% if received_requests.has_previous %}
+                                <a href="?page=1">&laquo; first</a>
+                                <a href="?page={{ received_requests.previous_page_number }}">previous</a>
+                                {% endif %}
+                                <span class="current-page">
+                                    Page {{ received_requests.number }} of {{ received_requests.paginator.num_pages }}.
+                                </span>
+                                {% if received_requests.has_next %}
+                                <a href="?page={{ received_requests.next_page_number }}">next</a>
+                                <a href="?page={{ received_requests.paginator.num_pages }}">last &raquo;</a>
+                                {% endif %}
+                            </span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    initialize();
+</script>
+{% include 'includes/alerts.html' %}
+{% endblock %}
