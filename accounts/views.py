@@ -4,6 +4,8 @@ from .forms import UserForm
 from .models import User,UserProfile
 from django.contrib import messages,auth
 from owner.forms import OwnerForm
+from listings.models import Listings
+from tenant.models import RentPayment
 from owner.models import Owner
 from django.contrib.auth.tokens import default_token_generator
 from .utils import detectUser,send_verification_email
@@ -139,9 +141,27 @@ def myAccount(request):
     redirectUrl = detectUser(user)
     return redirect(redirectUrl)
 
+def get_owner(request):
+    owner = Owner.objects.get(user=request.user)
+    return owner
+
 @login_required(login_url='login')
 @user_passes_test(check_role_owner)
 def ownerDashboard(request):
+    owner = get_owner(request)
+    
+    # Retrieve listings owned by the owner
+    owner_listings = Listings.objects.filter(owner=owner)
+    
+    # Retrieve recent rent payments for these listings
+    recent_rent_payments = RentPayment.objects.filter(
+        listing__in=owner_listings,
+        is_successful=True
+    ).order_by('-payment_date')[:10]  # Limit to the most recent 10 payments
+    
+    context = {
+        'recent_rent_payments': recent_rent_payments,
+    }
     return render(request, 'accounts/ownerDashboard.html')
 
 @login_required(login_url='login')
