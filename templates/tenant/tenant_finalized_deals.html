@@ -41,7 +41,7 @@
                                         </div>
                                         <hr>
                                         <div class="card-footer">
-                                            <a href="#" class="text float-left" download>Download Agreement</a>
+                                            <a href="{% url 'download_agreement' request.id %}" class="text float-left" download>Download Agreement</a>
                                             <a href="{% url 'rent_payment_form' listing_id=request.listing.id %}" class="btn btn-success float-right">Pay Rent Paypal</a>
                                         </div>
                                     </div>

@@ -13,6 +13,27 @@ import paypalrestsdk
 from accounts.models import UserProfile
 from listings.models import Request,Listings
 from tenant.models import RentPayment
+from django.http import HttpResponse
+from django.core.exceptions import PermissionDenied
+
+
+def download_agreement(request, request_id):
+    # Retrieve the request object
+    request_obj = get_object_or_404(Request, pk=request_id)
+
+    # Ensure that only the tenant associated with the request can download the agreement
+    if request.user != request_obj.user:
+        raise PermissionDenied
+
+    # Check if the request has an agreement file attached
+    if not request_obj.agreement_file:
+        return HttpResponse("No agreement file available for download.")
+
+    # Open and serve the agreement file for download
+    with open(request_obj.agreement_file.path, 'rb') as file:
+        response = HttpResponse(file.read(), content_type='application/pdf')
+        response['Content-Disposition'] = f'attachment; filename="{request_obj.agreement_file.name}"'
+        return response
 # Create your views here.
 @login_required(login_url='login')
 def tprofile(request):
@@ -159,7 +180,7 @@ def rent_payment_form(request, listing_id):
         context = {
             'rent_payment': rent_payment,
         }
-        return render(request, 'tenant/payment_receipt.html', context)
+        return render(request, 'tenant/view_rent_receipt.html', context)
     
     context = {
         'listing': listing,
@@ -220,7 +241,16 @@ def tenant_view_paid_rents(request, listing_id):
 
 def view_rent_receipt(request, payment_id):
     payment = get_object_or_404(RentPayment, id=payment_id)
-    return render(request, 'tenant/view_rent_receipt.html', {'payment': payment})
+    
+    # Retrieve the associated Request for this payment
+    tenant_request = get_object_or_404(Request, listing=payment.listing, user=request.user)
+    
+    context = {
+        'payment': payment,
+        'tenant_full_name': tenant_request.full_name,
+    }
+    
+    return render(request, 'tenant/view_rent_receipt.html', context)
 
 def execute_payment(request):
     payment_id = request.GET.get('paymentId')

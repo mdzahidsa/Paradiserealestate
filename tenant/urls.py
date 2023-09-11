@@ -10,6 +10,7 @@ urlpatterns = [
     path('rent-payment/<int:listing_id>/', views.rent_payment_form, name='rent_payment_form'),
     path('paypal/execute/', views.execute_payment, name='execute_payment'),
     path('payment-success/', views.payment_success, name='payment_success'),
+    path('download-agreement/<int:request_id>/', views.download_agreement, name='download_agreement'),
 
     path('view-paid-rents/<int:listing_id>/', views.tenant_view_paid_rents, name='tenant_view_paid_rents'),
     path('view-rent-receipt/<int:payment_id>/', views.view_rent_receipt, name='view_rent_receipt'),

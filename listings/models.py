@@ -79,6 +79,7 @@ class Request(models.Model):
     message = models.TextField()
     user_IDproof = models.ImageField(upload_to='userrequest/id')
     user_addressproof = models.ImageField(upload_to='userrequest/addressproof')
+    agreement_file = models.FileField(upload_to='deal/agreements', blank=True, null=True)
     is_ownerapproved = models.BooleanField(default=False)
     is_ownerrejected = models.BooleanField(default=False)
     is_adminapproved = models.BooleanField(default=False)

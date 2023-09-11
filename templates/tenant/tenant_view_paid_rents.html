@@ -4,7 +4,7 @@
 {% block content %}
 
 <div class="main-section">
-    {% include 'includes/cover.html' %}
+   
     <div class="page-section account-header buyer-logged-in">
         <div class="container">
             <div class="row">
@@ -31,7 +31,7 @@
                                     <td>{{ rent.payment_month }}</td>
                                     <td>{{ rent.payment_date }}</td>
                                     <td>${{ rent.listing.price }}</td>
-                                    <td><a href="#" target="_blank">View Receipt</a></td>
+                                    <td><a href="{% url 'view_rent_receipt' rent.id %}" target="_blank">View Receipt</a></td>
                                 </tr>
                                 {% endfor %}
                             </tbody>

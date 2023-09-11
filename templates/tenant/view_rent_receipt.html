@@ -4,14 +4,89 @@
 {% block content %}
 
 <div class="container">
-    <h1>Rent Receipt</h1>
-    <p><strong>Owner Name:</strong> {{ payment.listing.owner.owner_fullname }}</p>
-    <p><strong>Tenant Name:</strong> {{ payment.tenant.get_full_name }}</p>
-    <p><strong>Listing Title:</strong> {{ payment.listing.listing_title }}</p>
-    <p><strong>Payment Month:</strong> {{ payment.payment_month }}</p>
-    <p><strong>Rent Amount:</strong> ${{ payment.listing.price }}</p>
-    <p><strong>Payment Date:</strong> {{ payment.payment_date }}</p>
-    <!-- You can add more details if needed -->
+    <div class="receipt">
+        <div class="receipt-header text-center">
+            <img src="{% static 'logo/logo.png' %}" alt="Your Logo" class="img-fluid" style="max-width: 240px;">
+            <h1 class="mt-3">Rent Receipt</h1>
+        </div>
+        <hr>
+
+        <div class="row">
+            <div class="col-md-6">
+                <div class="recipient-info">
+                    <p><strong>Owner Name:</strong> {{ payment.listing.owner.owner_fullname }}</p>
+                    <p><strong>Tenant Name:</strong> {{ tenant_full_name }}</p>
+                </div>
+                <div class="listing-info">
+                    <p><strong>Listing Title:</strong> {{ payment.listing.listing_title }}</p>
+                    <p><strong>Payment Month:</strong> {{ payment.payment_month }}</p>
+                </div>
+                <div class="payment-details">
+                    <p><strong>Rent Amount:</strong> ${{ payment.listing.price }}</p>
+                    <p><strong>Payment Number:</strong> {{ payment.payment_number }}</p>
+                    <p><strong>Transaction Number:</strong> {{ payment.transaction_id }}</p>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="paid-stamp text-center mt-md-4 mt-4">
+                    <img src="{% static 'logo/paid.png' %}" alt="Paid Stamp" class="stamp img-fluid">
+                    <p class="mt-2 font-weight-bold">{{ payment.payment_date }}</p> <!-- Payment date here -->
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="text-center mt-4">
+                    <button class="btn btn-primary" onclick="window.print();">Print Receipt</button>
+                </div>
+
+            </div>
+
+        </div>
+
+        <!-- You can add more details or a signature section if needed -->
+    </div>
 </div>
+
+<style>
+    .receipt {
+        background-color: #f9f9f9;
+        padding: 20px;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    }
+
+    .receipt-header {
+        margin-bottom: 20px;
+    }
+
+    .receipt h1 {
+        font-size: 24px;
+    }
+
+    .receipt hr {
+        border: none;
+        border-top: 1px solid #ccc;
+        margin: 15px 0;
+    }
+
+    .recipient-info p,
+    .listing-info p,
+    .payment-details p {
+        margin: 5px 0;
+    }
+
+    .payment-details strong {
+        font-weight: bold;
+    }
+
+    .stamp {
+        max-width: 100px;
+    }
+
+    .paid-stamp p {
+        text-align: center;
+        font-weight: bold;
+    }
+</style>
 
 {% endblock %}
