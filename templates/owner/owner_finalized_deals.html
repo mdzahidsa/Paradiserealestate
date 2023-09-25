@@ -44,9 +44,15 @@
                                   <input type="text" class="form-control" value="{{ request.listing.price }}" readonly>
                               </p>                            <hr>
                                 
-                              <div class="card-footer"> 
-                                <a href="#" class="text float-left" download>Download Agreement</a>
-                                <a href="{% url 'owner_view_rents_received' listing_id=request.listing.id %}" class="btn btn-primary float-right">View Rents Received</a>
+                              <div class="card-footer">
+                                <div class="row">
+                                  <div class="col-md-6">
+                                    <a href="#" class="text float-left" download>Download Agreement</a>
+                                  </div>
+                                  <div class="col-md-6">
+                                    <a href="{% url 'owner_view_rents_received' listing_id=request.listing.id %}" class="btn btn-primary float-right">View Rents Received</a>
+                                  </div>
+                                </div>
                               </div>
                               
 
